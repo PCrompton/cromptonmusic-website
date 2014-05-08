@@ -1,0 +1,76 @@
+/*------FONTS------*/
+@import "mods/fonts";
+
+
+/*-----LAYOUT-----*/
+
+@links-width: 25%;
+@content-width: 100% - @links-width;
+@outer-margin: 1%;     //counts twice
+@middle-margin: 1%;   //counts once
+@padding: 1.55em;         //counts four times
+@vert-marg: 1em;
+
+
+
+.width(@total-width; @outer-margin; @middle-margin; @border; @padding) {
+  width: @total-width - @middle-margin/2 - (@outer-margin + @border + 2*@padding);
+  border-width-left: @border;
+  border-width-right: @border;
+  padding-left: @padding;
+  padding-right: @padding;
+}
+
+.vert-marg(@margin) {
+  margin-top: @margin;
+  margin-bottom: @margin;
+}
+
+
+.border() {
+  border: dashed;
+  border-width: 0;
+  border-radius: 10px;
+}
+
+
+@import "mods/layout-ie";
+@import "mods/layout";
+
+
+/*-----COLORS-----*/
+
+@color1: #2959C9;
+@color2: #3F4F73;
+@color3: #021A51;
+@color4: #8EAFFA;
+@color5: #D7E2FA;
+
+@headerFooterBG: @color3;
+@headerFooterText: @color5;
+
+@contentText: @color3;
+//@bodyBG: desaturate(darken(@color5, 10%), 40%);
+@bodyBG: lighten(@color2, 50%);
+//@bodyBG: @color5;
+
+/* Content BG */
+@contentBG: darken(@color5, 2%);
+@diff: 20%;
+@angle: -50deg;
+
+@titleBG: "/images/piano_keys.png";
+@shadow-color: @color2;
+
+@import "mods/colors";
+
+
+@angle: -70deg;
+
+@mob-margin: .5em;
+@mob-padding: 1em;
+
+/*-----MOBILE-----*/
+
+@import "mods/mobile";
+

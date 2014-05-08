@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+	<html class="ie9">
+<![endif]-->
+
+<!--[if !IE]>
+	<html>
+<![endif]-->
+<html id="html">
+<head>
+	<meta name="google-site-verification" content="uIzdJYoRGk_tDmmXyYOjkUA3CtXLxEkD-CYYEI3QsR8" />
+  	<meta charset="UTF-8">
+ 	<title>{{title}}</title>
+ 	<meta name="description" content="Private music lessons in piano, violin and voice.">
+ 	<meta name="keywords" content="piano, violin, voice, lessons, lowell, paul, crompton, cromptonmusic">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+
+  	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-50720125-1', 'cromptonmusic.com');
+	  ga('send', 'pageview');
+
+	</script>
+
+  	<script type="text/javascript">
+
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+
+    if (e.className != "open") {
+    	e.className = "open";
+    }
+    else {
+    	e.className = "";
+    }
+
+     var b = document.getElementById('button');
+     
+     if (b.className=="active") {
+     	b.className="";
+     }
+     else {
+     	b.className="active";
+     }
+
+
+
+
+    }
+
+	</script>
+
+</head>
+<body>
+	<div id="page">
+
+		<header id="header">
+			<div id="title">
+				<div id="layer">
+					<h1>Crompton Music</h1>
+					<p>Lessons in Piano, Violin and Voice</p>
+				</div>
+			</div>
+			
+		</header>
+
+		<nav id="menu">
+			<div id="mobile-menu">
+				<a id="button" onclick="toggle_visibility('list');" >Menu</a>
+
+			</div>
+			<ul id="list" class="close">
+				{% for m in menu %}
+					<li><a class=
+
+
+					{% if (path[1:] == m) or (path == "/" and m == "home") %}
+						"active" 
+
+					{% else %}
+						"none" 
+
+					{% endif %}
+						href=
+
+					{% if m == "home" %}
+						"/" 
+
+					{% else %}
+						"/{{m}}"
+
+					{% endif %}
+
+					>{{m.title()}}</a></li>
+				{% endfor %}		
+			</ul>
+		</nav>
+
+		
+		<div id="content">
+			<div id="page-content" class="content">
+				{% block page_content %}
+				{% endblock %}
+			</div>
+			<hr>
+			<div id="links" class="content">
+				<h2 class="heading content">External Links</h2>
+				<ul>{{links|safe}}</ul>
+			</div>
+		</div>
+		
+		<footer id="footer">
+			<p>&copy; Crompton Music 2014</p>
+		</footer>
+
+	</div>
+</body>
+</html>

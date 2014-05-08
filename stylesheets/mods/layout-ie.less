@@ -1,0 +1,188 @@
+.width(@total-width; @outer-margin; @middle-margin; @border; @padding) {
+  width: @total-width - @middle-margin/2 - (@outer-margin + @border + 2*@padding);
+  border-width-left: @border;
+  border-width-right: @border;
+  padding-left: @padding;
+  padding-right: @padding;
+}
+
+.vert-marg(@margin) {
+  margin-top: @margin;
+  margin-bottom: @margin;
+}
+
+.ie9 {
+  body {
+
+    margin: 0;
+    width: 100%;
+  }
+
+  #page {
+    width: 100%;
+    height: auto;
+    //min-height: 100%;
+  }
+
+  #header {
+    width: inherit;
+    height: auto;
+    min-height: 15em;
+  }
+
+  #title {
+    position: relative;
+    height: auto;
+    min-height: 11em;
+    padding: @padding 2*@padding;
+    
+
+    #layer {
+
+      float: right;
+      padding: 1em;
+      border-radius: 10px;
+
+      h1 {
+        position: relative;
+        margin: 0;
+
+      }
+
+      p {
+        position: relative;
+        margin: 0;
+
+      }
+    }
+  }
+
+  #content {
+
+    position: relative;
+    height: 65em;
+    min-height: 50em;
+    .vert-marg(@vert-marg);
+      display: flex;
+    flex-direction: column;
+    div {
+    }
+    flex: 1;
+  }
+
+  #footer {
+    
+    position: relative;
+    width: inherit;
+    height: 5em;
+
+      p {
+        padding:1.9em 0;
+        //margin: 0;
+      }
+  }
+
+  .active-hover() {
+    border: solid;
+    border-width: 0 .1em;
+  }
+
+  #menu {
+    
+    width: inherit;
+    height: auto;
+    min-height: 4em;
+    position: relative;
+    
+
+    p {
+      margin: 0;
+      
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+
+      li {
+        display: inline;
+
+        
+
+        a {
+          display: inline-block;
+          width: inherit;
+          height: inherit;
+          padding: auto 0;
+          padding-right: 25px;
+          padding-left: 25px;
+          border: solid;
+          border-width: 0 .1em;
+          }
+
+
+        a:hover {
+          .active-hover();
+        }
+
+        .active {
+          .active-hover();
+        }
+      }
+    }
+  }
+
+  #mobile-menu {
+    display: none;
+  }
+
+
+  #button {
+    display: none;
+  }
+
+
+
+  #page-content {
+    height: inherit;
+    min-height: inherit;
+    position: absolute;
+    left: 0;
+    top: 0;
+    .width(@content-width; @outer-margin; @middle-margin; 0; @padding);
+    margin-left: @outer-margin;
+    margin-right: @middle-margin/2;
+    .border;
+
+  }
+
+  #links {
+    height: inherit;
+    min-height: inherit;
+    position: absolute;
+    right: 0;
+    top: 0;
+    .width(@links-width; @outer-margin; @middle-margin; 0; @padding);
+    margin-left: @middle-margin/2;
+    margin-right: @outer-margin;
+    .border;
+
+    ul {
+      list-style: none;
+      padding: 0 0 1em 0;
+      margin: 0;
+      height: auto;
+    }
+  }
+
+  .content {
+
+      img {
+        width: 33%;
+        height: auto;
+        float: right;
+        margin: 0 0 @padding @padding;
+      }
+  }
+}
+

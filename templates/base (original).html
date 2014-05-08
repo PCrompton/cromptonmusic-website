@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  	<meta charset="UTF-8">
+ 	<title>Crompton Music</title>
+ 	<meta name="description" content="Description of your site goes here">
+ 	<meta name="keywords" content="keyword1, keyword2, keyword3">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	
+ 	<script type="text/javascript">
+
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+
+       if(e.style.display == 'block')
+        {
+          e.style.display = 'none';
+        }
+       else
+       {
+          e.style.display = 'block';
+
+       }
+    }
+
+</script>
+
+  	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+
+
+	<!--   -->
+	<link rel="stylesheet" type="text/css" href="/stylesheets/test-colors.css">
+
+</head>
+<body>
+	<div id="page">
+
+		<header id="header">
+			<div id="title">
+				<h1>Crompton Music</h1>
+				<p>Lessons in Piano, Violin and Voice</p>
+			</div>
+			<nav id="menu">
+				<input id="menu-button" type="button" value="Menu" onclick="toggle_visibility('list');">
+				<ul id="list">
+					{{menu|safe}}
+					<!--
+					<li><a href='/'>Home</a></li>
+				    <li><a href='/about'>About</a></li>
+				    <li><a href='/lessons'>Lessons</a></li>
+				    <li><a href='/blog'>Blog</a></li>
+				    <li><a href='/contact'>Contact</a></li>
+					-->	
+				</ul>
+			</nav>
+		</header>
+		
+		<div id="content">
+			<div id="page-content">
+				{% block page_content %}
+				{% endblock %}
+			</div>
+			<div id="links" class="content">
+				<h2 class="heading content">External Links</h2>
+				<ul>{{links|safe}}</ul>
+			</div>
+		</div>
+		
+		<footer id="footer">
+			<p>© Crompton Music 2014</p>
+		</footer>
+
+	</div>
+</body>
+</html>

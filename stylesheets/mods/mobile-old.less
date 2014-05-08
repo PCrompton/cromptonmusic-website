@@ -1,0 +1,244 @@
+/*and (min-device-width : 320px) */
+@media (max-device-width : 1024px) {
+
+  @margin: 3%;
+  @padding: 3%;
+
+html {
+  height: auto;
+  min-height: 100%;
+}
+body {
+  height: 100%;
+  min-height: 100%;
+}
+  .mob-width(@margin; @padding) {
+    width: 100% - 2*(@margin + @padding);
+    margin-left: @margin;
+    margin-right: @margin;
+    padding: @padding;
+
+  }
+
+
+  .padding-mob() {
+    width: 100% - 2*@padding;
+    padding: @padding;
+  }
+  #header {
+
+  }
+
+  #title {
+
+    padding: 3%;
+    #layer {
+      height: 100%;
+      width: auto;
+      h1 {
+        font-size: 5em;
+        text-align: right;
+        margin: 0;
+      }
+
+      p {
+        text-align: right;
+        margin: 0;
+        width: 100%;
+      }
+
+    }
+
+
+  }
+
+  
+  #menu {
+    font-size: 1.75em;
+  }
+
+
+   #page-content {
+    height: auto;
+    position: relative;
+    .mob-width(@margin; @padding);
+    margin-bottom: @margin;
+
+  }
+
+
+  #links {
+    min-height: 0;
+    .content-bg(@contentBG; @diff; 0.5; 1; 1; @angle - 90deg);
+    position: relative;
+    ul {
+      font-size: 2em;
+    }
+    .mob-width(@margin; @padding);
+   
+  }
+  
+  #content {
+    height: auto;
+    margin: @margin 0;
+  }
+
+  .content {
+    text-align: left;
+    margin: 0;
+    h2 {
+      font-size: 4em;
+    }
+    p {
+      font-size: 1.75em;
+      img {
+        width: 50%;
+        height: auto;
+      }
+    }   
+  }
+  
+}
+
+@media (max-device-width: 1280px) and (min-aspect-ratio: 16/10) and (orientation: landscape),
+(max-device-width: 600px) and (min-aspect-ratio: 9/16) and (orientation: portrait),
+(min-device-width: 320px) and (max-device-width: 767px)
+
+
+
+
+{
+    @margin: 3%;
+    @padding: 3%;
+    @vert-marg: .5em;
+
+    .mob-width(@margin; @padding) {
+      width: 100% - 2*(@margin + @padding);
+      margin-left: @margin;
+      margin-right: @margin;
+      padding: @padding;
+  }
+
+
+  .padding-mob() {
+    width: 100% - 2*@padding;
+    padding: @padding;
+  }
+#title {
+
+    padding: 3%;
+    #layer {
+      float: none;
+      width: auto;
+      h1 {
+        font-size: 3em;
+        text-align: left;
+        margin: 0;
+      }
+
+      p {
+        text-align: left;
+        margin: 0;
+        width: 100%;
+      }
+
+    }
+  }
+  #menu {
+    font-size: 2em;
+    text-align: right;
+    min-height: 0;
+    background: none;
+    background-color: @headerFooterBG;
+    overflow: hidden;
+          #list {
+        //height: 0;
+        padding: 0;
+        margin: 0;
+        display: none;
+        position: relative;
+
+        li {
+          display: block;
+          text-align: center;
+
+          a {
+            //border: none;
+            background: none;
+            line-height: 2.5em;
+            border-width: .1em 0;
+            width: 100%;
+            padding: 0 0;
+          }
+
+          a:hover {
+            background: darken(@headerFooterBG, 5%);
+          }
+
+          .active {
+                background: darken(@headerFooterBG, 5%);
+          }
+        }
+      } 
+  }
+
+        #mobile-menu {
+        display: block;
+        .menu-grad(@headerFooterBG);
+
+        button {
+          color: @headerFooterText;
+          display: inline;
+          width: auto;
+          background: none;
+
+        }
+      }
+   #page-content {
+    height: auto;
+    position: relative;
+    .mob-width(@margin; @padding);
+    margin-bottom: @vert-marg;
+
+  }
+
+  #links {
+    ul {
+      font-size: 1.5em;
+    }
+  }
+
+  #button {
+    font-size: 1.5em;
+    height: 1.5em;
+    line-height: 0em;
+    padding: @padding;
+
+  }
+
+  #content {
+    height: auto;
+    //min-height: 100%;
+    margin: @vert-marg 0;
+  }
+
+  .content {
+    //font-size: 0.5em;
+    text-align: left;
+    margin: 0;
+    h2 {
+      font-size: 2.5em;
+    }
+    p {
+      font-size: 1.5em;
+    
+      text-align: left;
+      img {
+        width: 100%;
+        height: auto;
+        float: none;
+        margin: 0;
+      }
+    }   
+  }
+}
