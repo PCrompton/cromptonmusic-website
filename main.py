@@ -32,30 +32,8 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 								autoescape = True)
 
-menu = """
-    <li><a href='/'>Home</a></li>
-    <li><a href='/about'>About</a></li>
-    <li><a href='/lessons'>Lessons</a></li>
-    <li><a href='/blog'>Blog</a></li>
-    <li><a href='/contact'>Contact</a></li>
-"""
 
 menu = ["home", "about", "lessons", "contact"]
-
-editMenu = """
-    <li><a href='/edit'>Home</a></li>
-    <li><a href='/about/edit'>About</a></li>
-    <li><a href='/lessons/edit'>Lessons</a></li>
-    <li><a href='/blog/edit'>Blog</a></li>
-    <li><a href='/contact/edit'>Contact</a></li>
-"""
-
-links = """
-    <li><a href='http://lyricora.org'>Lyricora</a></li>
-    <li><a href='http://rositalee.com'>Rosita Lee Music Center</a></li>
-    <li><a href='http://rising-stars-productions.com'>Rising Stars Productions</a></li>
-    <li><a href='http://mmmusing.blogspot.com'>MMmusing</a></li>
-"""
 
 
 def add_page(page):
@@ -63,6 +41,11 @@ def add_page(page):
     time.sleep(.1)
     get_pages(update = True)
 
+
+def add_link(link):
+    link.put()
+    time.sleep(.1)
+    get_links(update = True)
 
 def get_pages(update = False):
     mc_key = 'pages'
@@ -75,6 +58,15 @@ def get_pages(update = False):
         memcache.set(mc_key, pages)
     return pages
 
+def get_links(update = False):
+    mc_key = 'links'
+    links = memcache.get(mc_key)
+    if links is None or update:
+        logging.error("DB QUERY")
+        links = db.GqlQuery("SELECT * from Links ORDER BY position ASC")
+        links = list(links)
+        memcache.set(mc_key, links)
+    return links
 
 class Pages(db.Model):
     path = db.StringProperty()
@@ -95,6 +87,13 @@ class Pages(db.Model):
             if page.path == path:
                 return page
         return None
+
+class Links(db.Model):
+    position = db.IntegerProperty()
+    name = db.StringProperty()
+    url = db.StringProperty(required=True)
+    created = db.DateTimeProperty(auto_now_add = True)
+    last_modified = db.DateTimeProperty(auto_now = True)
 
 
 class MasterHandler(webapp2.RequestHandler):
@@ -136,6 +135,7 @@ class MasterHandler(webapp2.RequestHandler):
         return page
 
 
+
 class Page(MasterHandler):
     def get(self, path):
 
@@ -146,7 +146,57 @@ class Page(MasterHandler):
             self.render("content.html", title="ERROR: 404", content=path+": page not found", menu=menu, links=links, path=path)
         else:
             page = self.get_page(path)
+            links = get_links(path)
             self.render("content.html", title=page.title, content=page.content, menu=menu, links=links, path=path)
+
+class Edit_Links(MasterHandler):
+    def get(self, path):
+        user = users.get_current_user()
+        page = self.get_page(path)
+        #print "PATH: ", path;
+        if path == None:
+            path = "/"
+
+        if ((len(path) > 1) \
+            and path[1:] not in menu) \
+            or (path[1:] == "home"):
+
+            self.redirect(path)
+ 
+        links = get_links(path)
+        if user:
+            if users.is_current_user_admin():
+                greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+                        (user.nickname(), users.create_logout_url('/')))
+                self.render("edit_links.html", title=page.title, content=page.content, menu=menu, links=links, path=path, greeting=greeting)
+            else:
+                page.title = "Error: Forbidden!"
+                greeting = ('You must have admin permissions to edit this page. (<a href="%s">sign out</a>)' %
+                    (users.create_logout_url('/')))
+                self.render("content.html", title="Error: Forbidden!", content=greeting, menu=menu, links=links, path=path)
+        else:
+            greeting = ('<a href="%s">Sign in or register</a>.' %
+                        users.create_login_url('/'))
+
+            self.render("content.html", title="Please login as admin", content=greeting, menu=menu, links=links, path=path)
+
+    def post(self, path):
+        path = self.validate_path(path)
+        position = self.request.get('position')
+        name = self.request.get('name')
+        url = self.request.get('url')
+        uInput = self.request.get('uInput')
+        print "\n USER INPUT: ", uInput, "\n"
+        if uInput == "Save":
+            link = Links(name = name, url = url, path = path, position = int(position))
+            add_link(link)
+        elif uInput == "Delete":
+            q = ("SELECT * FROM Links WHERE name='%s' AND url='%s'" %(name, url))
+            result = db.GqlQuery(q).get()
+            db.delete(result)
+            time.sleep(.1)
+            get_links(True)
+        self.redirect(path)
 
 
 class Edit(MasterHandler):
@@ -163,6 +213,7 @@ class Edit(MasterHandler):
 
             self.redirect(path)
  
+        links = get_links(path)
         if user:
             if users.is_current_user_admin():
                 greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
@@ -191,7 +242,9 @@ class Edit(MasterHandler):
 
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)'
 EDIT_PAGE = PAGE_RE + r'?' + r'/edit'
+EDIT_LINKS = EDIT_PAGE + '/links'
 app = webapp2.WSGIApplication([
+    (EDIT_LINKS, Edit_Links),
     (EDIT_PAGE, Edit),
     (PAGE_RE, Page)
 ], debug=True)

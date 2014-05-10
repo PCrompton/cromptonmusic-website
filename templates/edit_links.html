@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block links %}
+	
+	{% if links %}
+		{% for link in links %}
+		
+			<form class="edit" method=post>
+				<input type="hidden" name="position" value={{loop.index}}>
+				<label for="name">Name: </label>
+				<input type="text" name="name" id="name" value='{{link.name}}'>
+				<br>
+				<label for="url">URL: </label>
+				<input type="url" name="url" id="url" value='{{link.url}}'>
+				<div>
+					<input name="uInput" type="submit" value="Save">
+					<input name="uInput" type="submit" value="Delete">
+				</div>
+				<br>
+			</form>
+		{% endfor %}
+	{% endif %}
+	<form class="edit" method=post>
+	
+		<input type="hidden" name="position" value=
+		
+		{% if links %}
+			{{loop.index}}
+		{% else %}
+			1
+		{% endif %}
+			
+		>
+
+		<label for="name">Name: </label>
+		<input type="text" name="name" id="name">
+		<br>
+		<label for="url">URL: </label>
+		<input type="url" name="url" id="url" value="http://">
+		<div id="link-submit">
+			<input name="uInput" type="submit" value="Save">
+		</div>
+	</form>
+{% endblock %}
