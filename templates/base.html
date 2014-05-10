@@ -109,8 +109,16 @@
 			</div>
 			<hr>
 			<div id="links" class="content">
-				<h2 class="heading content">External Links</h2>
-				<ul>{{links|safe}}</ul>
+				<div>
+					<h2 class="heading content">External Links</h2>
+					{% block links %}
+						<ul>
+							{% for link in links %}
+								<li><a href="{{link.url}}">{{link.name}}</a></li>
+							{% endfor %}	
+						</ul>
+					{% endblock %}	
+				</div>
 			</div>
 		</div>
 		

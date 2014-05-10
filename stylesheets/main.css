@@ -267,7 +267,10 @@ div#page {
 #links {
   max-width: 20%;
 }
-#links ul {
+#links div {
+  padding: 0;
+}
+#links div ul {
   padding: 0;
 }
 .content h3 {
