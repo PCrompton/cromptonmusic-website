@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+
+{% block blog %}
+<!--
+	<div id="blog-archives" class="content">
+		<h2>Archives</h2>
+	</div>
+	<hr>
+	-->
+
+{% endblock %}
+
+{% block page_content %}
+	<div id="blog-feed">
+		<h2>Crompton Music Blog</h2>
+
+		{% for post in posts %}
+			<h4>{{post.pubDate.strftime("%a, %b %d %Y")}}</h4>
+			<h3>{{post.title}}</h3>
+			
+			<hr>
+			<p id="post">{{post.content|safe}}</p>
+			<hr>
+			<h5>Posted by {{post.author}} @ {{post.pubDate.strftime("%I:%M %p")}}</h5>
+		{% endfor %}
+
+
+		<a href="http://cromptonmusic.blogspot.com/" target="_blank">
+			View on Blogger
+		</a>
+	
+	</div>
+{% endblock %}

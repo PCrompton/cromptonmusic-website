@@ -19,10 +19,16 @@ import os
 import jinja2
 import re
 import time
+import email.utils
 import logging
+import datetime
 
-from datetime import datetime, timedelta
 
+from xml.dom import minidom
+
+#from datetime import datetime, timedelta
+
+from google.appengine.api import urlfetch
 from google.appengine.api import memcache
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -33,7 +39,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 								autoescape = True)
 
 
-menu = ["home", "about", "lessons", "contact"]
+menu = ["home", "about", "lessons", "blog", "contact"]
 
 
 def add_page(page):
@@ -67,6 +73,18 @@ def get_links(update = False):
         links = list(links)
         memcache.set(mc_key, links)
     return links
+
+def parsePubDate(pubDate):
+    print "PUBDATE", type(pubDate)
+    d = email.utils.parsedate(pubDate)
+    ts = time.mktime(d)
+    return datetime.datetime.fromtimestamp(ts)
+
+class Post(db.Model):
+    pubDate = db.DateTimeProperty()
+    title = db.StringProperty()
+    content = db.TextProperty()
+    author = db.StringProperty()
 
 class Pages(db.Model):
     path = db.StringProperty()
@@ -135,7 +153,6 @@ class MasterHandler(webapp2.RequestHandler):
         return page
 
 
-
 class Page(MasterHandler):
     def get(self, path):
 
@@ -145,9 +162,31 @@ class Page(MasterHandler):
 
             self.render("content.html", title="ERROR: 404", content=path+": page not found", menu=menu, links=links, path=path)
         else:
-            page = self.get_page(path)
             links = get_links(path)
-            self.render("content.html", title=page.title, content=page.content, menu=menu, links=links, path=path)
+            if path == "/blog":
+                url = "http://cromptonmusic.blogspot.com/feeds/posts/default?alt=rss"
+                result = urlfetch.fetch(url).content
+                xml = minidom.parseString(result)
+                items = xml.getElementsByTagName("item")
+                posts = []
+                for item in items:
+                    pubDate = parsePubDate(item.getElementsByTagName("pubDate")[0].firstChild.nodeValue)
+                    title = item.getElementsByTagName("title")[0].firstChild.nodeValue
+                    content = item.getElementsByTagName("description")[0].firstChild.nodeValue
+                    author = item.getElementsByTagName("author")[0].firstChild.nodeValue
+
+                    author = author[author.find('(')+1:author.find(')')]
+
+                    
+                    post = Post(pubDate = pubDate, title = title, content = content, author = author)
+                    print post.content
+                    posts.append(post)
+
+                self.render("blog.html", menu=menu, links=links, path=path, xml=xml, posts=posts)
+            else:
+                page = self.get_page(path)
+            
+                self.render("content.html", title=page.title, content=page.content, menu=menu, links=links, path=path)
 
 class Edit_Links(MasterHandler):
     def get(self, path):
@@ -248,3 +287,5 @@ app = webapp2.WSGIApplication([
     (EDIT_PAGE, Edit),
     (PAGE_RE, Page)
 ], debug=True)
+
+
