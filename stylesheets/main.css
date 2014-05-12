@@ -305,15 +305,6 @@ div#page {
   border: dashed;
   border-width: 0;
   border-radius: 10px;
-  /*
-  #blog-feed {
-      
-    width: 60%;
-    float: right;
-  
-  }
-  */
-
 }
 #content hr {
   width: 1px;
@@ -325,6 +316,9 @@ div#page {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+}
+#content #blog-feed {
+  padding: 0;
 }
 #blog-archives {
   max-width: 20%;
