@@ -59,6 +59,7 @@ body a {
   font-size: 1.6em;
   font-family: Garamond, serif;
 }
+.content #blog-feed,
 .content p {
   font-size: 1.4em;
   text-align: justify;
@@ -318,7 +319,39 @@ div#page {
   flex: 1;
 }
 #content #blog-feed {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin: 0 4em;
   padding: 0;
+}
+#content #blog-feed hr {
+  width: 95%;
+  height: 1px;
+}
+#content #blog-feed div {
+  padding: 0 0 1em 0;
+}
+#content #blog-feed #post {
+  border-bottom: solid;
+  border-bottom: 1px;
+  padding: 1em 0;
+}
+#content #blog-feed #post h4 {
+  margin-bottom: 0;
+}
+#content #blog-feed #post #post-title {
+  margin-top: 1em;
+}
+#content #blog-feed div#blog-footer {
+  margin: 0;
+  padding: 2em 0;
 }
 #blog-archives {
   max-width: 20%;
