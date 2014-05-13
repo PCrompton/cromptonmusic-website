@@ -12,23 +12,28 @@
 {% endblock %}
 
 {% block page_content %}
+	
+	<h2>Crompton Music Blog</h2>
+	<hr>
 	<div id="blog-feed">
-		<h2>Crompton Music Blog</h2>
-
 		{% for post in posts %}
-			<h4>{{post.pubDate.strftime("%a, %b %d %Y")}}</h4>
-			<h3>{{post.title}}</h3>
-			
+		<div id="post">
+			<h4 id="pubDate">{{post.pubDate.strftime("%a, %b %d %Y")}}</h4>
+			<h3 id="post-title">{{post.title}}</h3>
+			<br>
 			<hr>
-			<p id="post">{{post.content|safe}}</p>
+			{{post.content|safe}}
 			<hr>
-			<h5>Posted by {{post.author}} @ {{post.pubDate.strftime("%I:%M %p")}}</h5>
+			<h5>Posted by {{post.author}} <!--@ {{post.pubDate.strftime("%I:%M %p")}}--></h5>
+		</div>
+		<hr>
 		{% endfor %}
 
-
-		<a href="http://cromptonmusic.blogspot.com/" target="_blank">
-			View on Blogger
-		</a>
+		<div id="blog-footer">
+			<a href="http://cromptonmusic.blogspot.com/" target="_blank">
+				View on Blogger
+			</a>
+		</div>
 	
 	</div>
 {% endblock %}
