@@ -437,6 +437,12 @@ div#page {
     flex: none;
     padding: 0 1em;
   }
+  #content #blog-feed {
+    margin: 0;
+  }
+  #content #blog-feed hr {
+    width: 100%;
+  }
   #page-content {
     min-height: 30em;
   }
@@ -548,6 +554,9 @@ div#page {
   }
   .content p {
     font-size: 1.5em;
+    text-align: left;
+  }
+  .content #blog-feed {
     text-align: left;
   }
 }
