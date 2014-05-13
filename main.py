@@ -99,9 +99,7 @@ def getPosts(xml):
         content = item.getElementsByTagName("description")[0].firstChild.nodeValue
         author = item.getElementsByTagName("author")[0].firstChild.nodeValue
         author = author[author.find('(')+1:author.find(')')]
-
         post = Post(pubDate = pubDate, title = title, content = content, author = author)
-        print post.content
         posts.append(post)
     return posts
 
