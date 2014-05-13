@@ -80,6 +80,32 @@ def parsePubDate(pubDate):
     ts = time.mktime(d)
     return datetime.datetime.fromtimestamp(ts)
 
+def getRSS(rss):
+    """
+    rss = rss feed url
+    return minidom object
+    """
+    result = urlfetch.fetch(rss).content
+    xml = minidom.parseString(result)
+
+    return xml
+
+def getPosts(xml):
+    items = xml.getElementsByTagName("item")
+    posts = []
+    for item in items:
+        pubDate = parsePubDate(item.getElementsByTagName("pubDate")[0].firstChild.nodeValue)
+        title = item.getElementsByTagName("title")[0].firstChild.nodeValue
+        content = item.getElementsByTagName("description")[0].firstChild.nodeValue
+        author = item.getElementsByTagName("author")[0].firstChild.nodeValue
+        author = author[author.find('(')+1:author.find(')')]
+
+        post = Post(pubDate = pubDate, title = title, content = content, author = author)
+        print post.content
+        posts.append(post)
+    return posts
+
+
 class Post(db.Model):
     pubDate = db.DateTimeProperty()
     title = db.StringProperty()
@@ -164,28 +190,12 @@ class Page(MasterHandler):
         else:
             links = get_links(path)
             if path == "/blog":
-                url = "http://cromptonmusic.blogspot.com/feeds/posts/default?alt=rss"
-                result = urlfetch.fetch(url).content
-                xml = minidom.parseString(result)
-                items = xml.getElementsByTagName("item")
-                posts = []
-                for item in items:
-                    pubDate = parsePubDate(item.getElementsByTagName("pubDate")[0].firstChild.nodeValue)
-                    title = item.getElementsByTagName("title")[0].firstChild.nodeValue
-                    content = item.getElementsByTagName("description")[0].firstChild.nodeValue
-                    author = item.getElementsByTagName("author")[0].firstChild.nodeValue
-
-                    author = author[author.find('(')+1:author.find(')')]
-
-                    
-                    post = Post(pubDate = pubDate, title = title, content = content, author = author)
-                    print post.content
-                    posts.append(post)
-
+                rss = "http://cromptonmusic.blogspot.com/feeds/posts/default?alt=rss"
+                xml = getRSS(rss)
+                posts = getPosts(xml)
                 self.render("blog.html", menu=menu, links=links, path=path, xml=xml, posts=posts)
             else:
                 page = self.get_page(path)
-            
                 self.render("content.html", title=page.title, content=page.content, menu=menu, links=links, path=path)
 
 class Edit_Links(MasterHandler):
